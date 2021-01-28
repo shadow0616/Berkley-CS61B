@@ -32,23 +32,13 @@ public class Planet {
         return (Planet.G * this.mass * P.mass) / (r * r);
     }
     public double calcForceExertedByX(Planet P) {
-        double xDiff;
-        if (this.xxPos < P.xxPos) {
-            xDiff = P.xxPos - this.xxPos;
-        } else {
-            xDiff = this.xxPos - P.xxPos;
-        }
+        double xDiff = P.xxPos - this.xxPos;
         double r = this.calcDistance(P);
         double force = calcForceExertedBy(P);
         return force * xDiff / r;
     }
     public double calcForceExertedByY(Planet P) {
-        double yDiff;
-        if (this.yyPos < P.yyPos) {
-            yDiff = P.yyPos - this.yyPos;
-        } else {
-            yDiff = this.yyPos - P.yyPos;
-        }
+        double yDiff = P.yyPos - this.yyPos;
         double r = this.calcDistance(P);
         double force = calcForceExertedBy(P);
         return force * yDiff / r;

@@ -18,7 +18,7 @@ public class NBody {
         return Planets;
     }
     public static void main(String[] args) {
-        int waitTimeMilliseconds = 100;
+        int waitTimeMilliseconds = 10;
         double T = Double.parseDouble(args[0]);
         double dt = Double.parseDouble(args[1]);
         String filename = args[2];
