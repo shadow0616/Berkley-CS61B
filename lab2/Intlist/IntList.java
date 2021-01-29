@@ -82,7 +82,20 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        // recursive destructive method
+        if (A.rest == null) {
+            A.rest = B;
+        } else {
+            dcatenate(A.rest, B);
+        }
+        return A;
+        // iterative destructive method
+//        IntList pointer = A;
+//        while (pointer.rest != null) {
+//            pointer = pointer.rest;
+//        }
+//        pointer.rest = B;
+//        return A;
     }
 
     /**
@@ -91,7 +104,26 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        // recursive nondestructive method
+//        if (A.rest == null) {
+//            return new IntList(A.first, B);
+//        } else {
+//            return new IntList(A.first, catenate(A.rest, B));
+//        }
+        // iterative nondestructive method
+        IntList result = new IntList(A.first, null);
+        IntList pointer = result;
+        A = A.rest;
+        while (true) {
+            pointer.rest = new IntList(A.first, null);
+            A = A.rest;
+            pointer = pointer.rest;
+            if (A.rest == null) {
+                pointer.rest = new IntList(A.first, B);
+                break;
+            }
+        }
+        return result;
     }
 
 
