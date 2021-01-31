@@ -7,7 +7,7 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         this.items = (T[]) new Object[8];
     }
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] temp = (T[]) new Object[capacity];
         if (this.nextFirst < this.nextLast) {
             int copyLength = this.nextLast - this.nextFirst;
@@ -25,14 +25,14 @@ public class ArrayDeque<T> {
             this.nextFirst = capacity - copyLength - 1;
         }
     }
-    public int minusOne(int index) {
+    private int minusOne(int index) {
         index = (index - 1) % items.length;
         if (index < 0) {
             index = index + items.length;
         }
         return index;
     }
-    public int plusOne(int index) {
+    private int plusOne(int index) {
         index = (index + 1) % items.length;
         return index;
     }
@@ -53,6 +53,9 @@ public class ArrayDeque<T> {
         this.size += 1;
     }
     public T removeFirst() {
+        if (this.isEmpty()) {
+            return null;
+        }
         this.nextFirst = this.plusOne(this.nextFirst);
         T result = this.items[nextFirst];
         this.items[nextFirst] = null;
@@ -63,6 +66,9 @@ public class ArrayDeque<T> {
         return result;
     }
     public T removeLast() {
+        if (this.isEmpty()) {
+            return null;
+        }
         this.nextLast = this.minusOne(this.nextLast);
         T result = this.items[this.nextLast];
         this.items[nextLast] = null;
