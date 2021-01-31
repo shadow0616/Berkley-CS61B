@@ -10,10 +10,11 @@ public class ArrayDeque<Tifa> {
     public void resize(int capacity) {
         Tifa[] temp = (Tifa[]) new Object[capacity];
         if (this.nextFirst < this.nextLast) {
-            System.arraycopy(this.items, this.nextFirst, temp, capacity / 4, this.nextLast - this.nextFirst);
+            int copyLength = this.nextLast - this.nextFirst;
+            System.arraycopy(this.items, this.nextFirst, temp, capacity / 4, copyLength);
             this.items = temp;
-            this.nextFirst += capacity / 4;
-            this.nextLast += capacity / 4;
+            this.nextFirst = capacity / 4;
+            this.nextLast = this.nextFirst + copyLength;
         } else {
             int start = this.nextFirst + 1;
             int copyStart = capacity - (items.length - this.nextFirst - 1);
@@ -21,7 +22,7 @@ public class ArrayDeque<Tifa> {
             System.arraycopy(this.items, 0, temp, 0, this.nextLast);
             System.arraycopy(this.items, start, temp, copyStart, copyLength);
             this.items = temp;
-            this.nextFirst += capacity / 2;
+            this.nextFirst = capacity - copyLength - 1;
         }
     }
     public int minusOne(int index) {
@@ -67,6 +68,18 @@ public class ArrayDeque<Tifa> {
             this.resize(items.length / 2);
         }
     }
+    public void printDeque() {
+        if (this.isEmpty()) {
+            return;
+        } else {
+            int index = 0;
+            while (index < this.size) {
+                System.out.print(this.get(index));
+                System.out.print(" ");
+                index += 1;
+            }
+        }
+    }
     public Tifa get(int index) {
         if (index < 0 || index > this.size) {
             return null;
@@ -76,6 +89,9 @@ public class ArrayDeque<Tifa> {
     }
     public int size() {
         return this.size;
+    }
+    public boolean isEmpty() {
+        return this.size == 0;
     }
     public static void main(String[] args) {
         ArrayDeque<String> ard = new ArrayDeque();
@@ -87,6 +103,7 @@ public class ArrayDeque<Tifa> {
         ard.addFirst("f");
         ard.addFirst("g");
         ard.addLast("x");
-        ard.get(4);
+        ard.printDeque();
+//        ard.get(4);
     }
 }
