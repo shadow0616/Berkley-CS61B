@@ -1,7 +1,7 @@
 public class ArrayDeque<Tifa> {
     private Tifa[] items;
-    private int nextFirst = 4;
-    private int nextLast = 5;
+    private int nextFirst = 3;
+    private int nextLast = 4;
     private int size;
 
     public ArrayDeque() {
@@ -9,35 +9,70 @@ public class ArrayDeque<Tifa> {
     }
     public void resize(int capacity) {
         Tifa[] temp = (Tifa[]) new Object[capacity];
-        int frontLength = this.nextFirst - 0;
-        int backLength = this.items.length - (this.nextLast + 1);
-        System.arraycopy(this.items, 0, temp, 0, frontLength);
-        System.arraycopy(this.items, nextLast + 1, temp, temp.length - backLength , backLength);
-        this.items = temp;
-        this.nextLast = this.nextLast + capacity / 2;
-    }
-
-    public void addFirst(Tifa x) {
-        items[nextFirst] = x;
-        this.nextFirst = (this.nextFirst - 1) % items.length;
-        if (this.nextFirst < 0) {
-            this.nextFirst = this.nextFirst + items.length;
+        if (this.nextFirst < this.nextLast) {
+            System.arraycopy(this.items, this.nextFirst, temp, capacity / 4, this.nextLast - this.nextFirst);
+            this.items = temp;
+            this.nextFirst += capacity / 4;
+            this.nextLast += capacity / 4;
+        } else {
+            int start = this.nextFirst + 1;
+            int copyStart = capacity - (items.length - this.nextFirst - 1);
+            int copyLength = items.length - this.nextFirst - 1;
+            System.arraycopy(this.items, 0, temp, 0, this.nextLast);
+            System.arraycopy(this.items, start, temp, copyStart, copyLength);
+            this.items = temp;
+            this.nextFirst += capacity / 2;
         }
-        this.size += 1;
-        if (this.nextFirst == this.nextLast) {
+    }
+    public int minusOne(int index) {
+        index = (index - 1) % items.length;
+        if (index < 0) {
+            index = index + items.length;
+        }
+        return index;
+    }
+    public int plusOne(int index) {
+        index = (index + 1) % items.length;
+        return index;
+    }
+    public void addFirst(Tifa x) {
+        this.items[nextFirst] = x;
+        if (this.minusOne(nextFirst) == this.nextLast) {
             this.resize(2 * items.length);
         }
+        this.nextFirst = this.minusOne(nextFirst);
+        this.size += 1;
     }
     public void addLast(Tifa x) {
-        items[nextLast] = x;
-        this.nextLast = (this.nextLast + 1) % items.length;
-        this.size += 1;
-        if (this.nextFirst == this.nextLast) {
+        this.items[nextLast] = x;
+        if (this.nextFirst == this.plusOne(this.nextLast)) {
             this.resize(2 * items.length);
         }
+        this.nextLast = this.plusOne(this.nextLast);
+        this.size += 1;
     }
-    public Tifa get(int i) {
-
+    public void removeFirst() {
+        this.nextFirst = this.plusOne(this.nextFirst);
+        this.items[nextFirst] = null;
+        this.size -= 1;
+        if (this.size < this.items.length / 4 && this.items.length > 8) {
+            this.resize(items.length / 2);
+        }
+    }
+    public void removeLast() {
+        this.nextLast = this.minusOne(this.nextLast);
+        this.items[nextLast] = null;
+        this.size -= 1;
+        if (this.size < this.items.length / 4 && this.items.length > 8) {
+            this.resize(items.length / 2);
+        }
+    }
+    public Tifa get(int index) {
+        if (index < 0 || index > this.size) {
+            return null;
+        }
+        index = (this.nextFirst + index) % this.items.length;
+        return this.items[index];
     }
     public int size() {
         return this.size;
@@ -50,6 +85,8 @@ public class ArrayDeque<Tifa> {
         ard.addFirst("e");
         ard.addFirst("c");
         ard.addFirst("f");
-        ard.addFirst("g");;
+        ard.addFirst("g");
+        ard.addLast("x");
+        ard.get(4);
     }
 }
