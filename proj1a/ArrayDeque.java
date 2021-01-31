@@ -1,14 +1,14 @@
-public class ArrayDeque<Tifa> {
-    private Tifa[] items;
+public class ArrayDeque<T> {
+    private T[] items;
     private int nextFirst = 3;
     private int nextLast = 4;
     private int size;
 
     public ArrayDeque() {
-        this.items = (Tifa[]) new Object[8];
+        this.items = (T[]) new Object[8];
     }
     public void resize(int capacity) {
-        Tifa[] temp = (Tifa[]) new Object[capacity];
+        T[] temp = (T[]) new Object[capacity];
         if (this.nextFirst < this.nextLast) {
             int copyLength = this.nextLast - this.nextFirst;
             System.arraycopy(this.items, this.nextFirst, temp, capacity / 4, copyLength);
@@ -36,20 +36,20 @@ public class ArrayDeque<Tifa> {
         index = (index + 1) % items.length;
         return index;
     }
-    public void addFirst(Tifa x) {
+    public void addFirst(T x) {
         this.items[nextFirst] = x;
+        this.nextFirst = this.minusOne(nextFirst);
         if (this.minusOne(nextFirst) == this.nextLast) {
             this.resize(2 * items.length);
         }
-        this.nextFirst = this.minusOne(nextFirst);
         this.size += 1;
     }
-    public void addLast(Tifa x) {
+    public void addLast(T x) {
         this.items[nextLast] = x;
+        this.nextLast = this.plusOne(this.nextLast);
         if (this.nextFirst == this.plusOne(this.nextLast)) {
             this.resize(2 * items.length);
         }
-        this.nextLast = this.plusOne(this.nextLast);
         this.size += 1;
     }
     public void removeFirst() {
@@ -80,11 +80,11 @@ public class ArrayDeque<Tifa> {
             }
         }
     }
-    public Tifa get(int index) {
+    public T get(int index) {
         if (index < 0 || index > this.size) {
             return null;
         }
-        index = (this.nextFirst + index) % this.items.length;
+        index = (this.nextFirst + index + 1) % this.items.length;
         return this.items[index];
     }
     public int size() {
@@ -93,17 +93,17 @@ public class ArrayDeque<Tifa> {
     public boolean isEmpty() {
         return this.size == 0;
     }
-    public static void main(String[] args) {
-        ArrayDeque<String> ard = new ArrayDeque();
-        ard.addLast("a");
-        ard.addLast("b");
-        ard.addFirst("d");
-        ard.addFirst("e");
-        ard.addFirst("c");
-        ard.addFirst("f");
-        ard.addFirst("g");
-        ard.addLast("x");
-        ard.printDeque();
+//    public static void main(String[] args) {
+//        ArrayDeque<String> ard = new ArrayDeque();
+//        ard.addLast("a");
+//        ard.addLast("b");
+//        ard.addFirst("d");
+//        ard.addFirst("e");
+//        ard.addFirst("c");
+//        ard.addFirst("f");
+//        ard.addFirst("g");
+//        ard.addLast("x");
+//        ard.printDeque();
 //        ard.get(4);
-    }
+//    }
 }
