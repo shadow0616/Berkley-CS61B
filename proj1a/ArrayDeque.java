@@ -52,21 +52,25 @@ public class ArrayDeque<T> {
         }
         this.size += 1;
     }
-    public void removeFirst() {
+    public T removeFirst() {
         this.nextFirst = this.plusOne(this.nextFirst);
+        T result = this.items[nextFirst];
         this.items[nextFirst] = null;
         this.size -= 1;
         if (this.size < this.items.length / 4 && this.items.length > 8) {
             this.resize(items.length / 2);
         }
+        return result;
     }
-    public void removeLast() {
+    public T removeLast() {
         this.nextLast = this.minusOne(this.nextLast);
+        T result = this.items[this.nextLast];
         this.items[nextLast] = null;
         this.size -= 1;
         if (this.size < this.items.length / 4 && this.items.length > 8) {
             this.resize(items.length / 2);
         }
+        return result;
     }
     public void printDeque() {
         if (this.isEmpty()) {
