@@ -32,18 +32,18 @@ public class LinkedListDeque<T> {
     public LinkedListDeque() {
         this.sentinel = new TNode(null, null, null);
         this.sentinel.prev = this.sentinel;
-        this.sentinel.next = this.sentinel;;
+        this.sentinel.next = this.sentinel;
         this.size = 0;
     }
 
     /** Deque constructor, initiates a Deque with an item */
-    public LinkedListDeque(T x) {
-        this.sentinel = new TNode(null, null, null);
-        TNode newNode = new TNode(x, this.sentinel, this.sentinel);
-        this.sentinel.next = newNode;
-        this.sentinel.prev = newNode;
-        this.size = 1;
-    }
+//    public LinkedListDeque(T x) {
+//        this.sentinel = new TNode(null, null, null);
+//        TNode newNode = new TNode(x, this.sentinel, this.sentinel);
+//        this.sentinel.next = newNode;
+//        this.sentinel.prev = newNode;
+//        this.size = 1;
+//    }
 
     /** adds an item to the front of the Deque */
     public void addFirst(T item) {
@@ -74,7 +74,7 @@ public class LinkedListDeque<T> {
 
     /** removes and returns the last item of the Deque */
     public T removeLast() {
-        if (this.size() == 0 ) {
+        if (this.size() == 0) {
             return null;
         } else {
             T result = this.sentinel.prev.item;
