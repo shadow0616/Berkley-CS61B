@@ -1,12 +1,19 @@
 public class ArrayDeque<T> {
+    /** initializes the array, the array will be filled starting from the middle, track the size */
     private T[] items;
     private int nextFirst = 3;
     private int nextLast = 4;
     private int size;
 
+    /** array constructor, the starting size of the array is 8 */
     public ArrayDeque() {
         this.items = (T[]) new Object[8];
     }
+
+    /** resizes the array, if the first index is smaller than the last index, patch or crop the
+     * array in the front and back by half the changed size. if the first index is larger than
+     * the last index, insert or remove the changed size between the two indices
+     */
     private void resize(int capacity) {
         T[] temp = (T[]) new Object[capacity];
         if (this.nextFirst < this.nextLast) {
@@ -25,6 +32,8 @@ public class ArrayDeque<T> {
             this.nextFirst = capacity - copyLength - 1;
         }
     }
+
+    /** calculates minus one of the given index so it cycles within the length of the array */
     private int minusOne(int index) {
         index = (index - 1) % items.length;
         if (index < 0) {
@@ -32,10 +41,16 @@ public class ArrayDeque<T> {
         }
         return index;
     }
+
+    /** calculates plus one of the given index so it cycles within the length of the array */
     private int plusOne(int index) {
         index = (index + 1) % items.length;
         return index;
     }
+
+    /** adds an item to the front, after that, if the indices are adjacent, doubles the size of the
+     * array
+     */
     public void addFirst(T x) {
         this.items[nextFirst] = x;
         this.nextFirst = this.minusOne(nextFirst);
@@ -44,6 +59,10 @@ public class ArrayDeque<T> {
         }
         this.size += 1;
     }
+
+    /** adds an item to the end, after that, if the indices are adjacent, doubles the size of the
+     * array
+     */
     public void addLast(T x) {
         this.items[nextLast] = x;
         this.nextLast = this.plusOne(this.nextLast);
@@ -52,6 +71,10 @@ public class ArrayDeque<T> {
         }
         this.size += 1;
     }
+
+    /** removes and return the first item, after that, if the usage is lower than a quarter, halves
+     *  the size of the array. returns null if no such item
+     */
     public T removeFirst() {
         if (this.isEmpty()) {
             return null;
@@ -65,6 +88,10 @@ public class ArrayDeque<T> {
         }
         return result;
     }
+
+    /** removes and returns the last item, after that, if the usage is lower than a quarter, halves
+     * the size of the array. returns null if no such item
+     */
     public T removeLast() {
         if (this.isEmpty()) {
             return null;
@@ -78,6 +105,8 @@ public class ArrayDeque<T> {
         }
         return result;
     }
+
+    /** print the items in the deque, separated by a space */
     public void printDeque() {
         if (this.isEmpty()) {
             return;
@@ -90,6 +119,8 @@ public class ArrayDeque<T> {
             }
         }
     }
+
+    /** returns the item at the given index, 0 means the first item, returns null if no such item */
     public T get(int index) {
         if (index < 0 || index > this.size) {
             return null;
@@ -97,9 +128,13 @@ public class ArrayDeque<T> {
         index = (this.nextFirst + index + 1) % this.items.length;
         return this.items[index];
     }
+
+    /** returns the size of the array */
     public int size() {
         return this.size;
     }
+
+    /** returns true of false indicating if the array is empty */
     public boolean isEmpty() {
         return this.size == 0;
     }
