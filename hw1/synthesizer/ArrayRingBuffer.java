@@ -10,7 +10,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     private T[] rb;
     /* Iterator for ArrayRingBuffer class. */
     public Iterator<T> iterator() {
-        return new arbIterator();
+        return new ArrayRingBufferIterator();
     }
 
     /**
@@ -63,17 +63,20 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * Return oldest item, but don't remove it.
      */
     public T peek() {
+        if (this.isEmpty()) {
+            throw new RuntimeException("Ring buffer is empty");
+        }
         return rb[this.first];
     }
 
     /**
      * Implement iterator method
      */
-    private class arbIterator implements Iterator<T> {
+    private class ArrayRingBufferIterator implements Iterator<T> {
         private int front;
         private int count;
 
-        public arbIterator() {
+        public ArrayRingBufferIterator() {
             this.front = first;
             this.count = 0;
         }
