@@ -9,7 +9,7 @@ import java.util.Random;
 public class WorldGeneration {
     private static final int HEIGHT = 50;
     private static final int WIDTH = 50;
-    private static final long SEED = 114514;
+    private static final long SEED = 2873123;
     private static final Random RANDOM = new Random(SEED);
 
     private static class Position {
@@ -28,7 +28,7 @@ public class WorldGeneration {
         private final int entSide;
         private Position startPos;
         private Position[][] walls = new Position[4][]; // side: [0][] bottom, [1][] left, [2][] top, [3][] right
-        private Position[] openings = new Position[4]; // side: [0] bottom, [1] left, [2] top, [3] right
+        private Position[] exits = new Position[4]; // side: [0] bottom, [1] left, [2] top, [3] right
         private Position[] corners = new Position[4]; // clockwise, start from [0] bottom left (startPos)
         private Position[][] floors; // [i][j], i: row, j: column
 
@@ -36,12 +36,10 @@ public class WorldGeneration {
             this.entrance = entrance;
             this.entSide = entSide;
             // room size constraint, max: 9 x 9, min: 2 x 2, hard coded for now
-//             width = RANDOM.nextInt(8) + 2;
-//             height = RANDOM.nextInt(8) + 2;
-            width = 9;
-            height = 9;
-//            walls = new Position[4][];
-//            corners = new Position[4];
+             width = RANDOM.nextInt(8) + 2;
+             height = RANDOM.nextInt(8) + 2;
+//            width = 9;
+//            height = 9;
             // randomizes entrance position in the walls of the room
             int entWallPos = this.randomEntrance();
             // calculate the start position of the room (bottom left corner, including walls)
@@ -53,7 +51,7 @@ public class WorldGeneration {
             // assign floors
             this.assignFloors();
             // create random openings
-            this.randomOpening();
+            this.randomExits();
         }
 
         private int randomEntrance() {
@@ -139,30 +137,55 @@ public class WorldGeneration {
                 world[corner.x][corner.y] = TETile.colorVariant(cornerTile, 32, 32, 32, RANDOM);
             }
             // draw openings (for testing)
-            for (Position opening: openings) {
-                if (opening != null) {
-                    world[opening.x][opening.y] = TETile.colorVariant(floorTile, 32, 32, 32, RANDOM);
+            for (Position exit: exits) {
+                if (exit != null) {
+                    world[exit.x][exit.y] = TETile.colorVariant(floorTile, 32, 32, 32, RANDOM);
                 }
             }
             // draw start position & entrance
             world[startPos.x][startPos.y] = TETile.colorVariant(startTile, 32, 32, 32, RANDOM);
             world[entrance.x][entrance.y] = TETile.colorVariant(entTile, 32, 32, 32, RANDOM);
         }
-        private void randomOpening() {
+        private void randomExits() {
             for (int i = 0; i < 4; i += 1) {
                 if (i != entSide) {
                     switch(RANDOM.nextInt(2)) {
                         case 0:
                             break;
                         case 1:
-                            openings[i] = walls[i][RANDOM.nextInt(walls[i].length)];
+                            exits[i] = walls[i][RANDOM.nextInt(walls[i].length)];
                             break;
                     }
                 }
             }
         }
     }
+    private static class Hallway {
+        private int length;
+        private int entSide;
+        private Position entrance;
+        private Position[][] walls = new Position[4][];
+        private Position[] exits = new Position[4];
+        private Position[] corners = new Position[4];
+        private Position[][] floors;
 
+        private Hallway(Position entrance, int entSide) {
+            this.entrance = entrance;
+            this.entSide = entSide;
+            length = RANDOM.nextInt(9) + 1;
+
+        }
+        private void assignCorners() {
+        }
+        private void assignWalls() {
+        }
+        private void assignFloors() {
+        }
+        private void drawHallway(TETile[][] world) {
+        }
+        private void randomExits() {
+        }
+    }
     public static void main(String[] args) {
         TERenderer test = new TERenderer();
         test.initialize(WIDTH, HEIGHT);
