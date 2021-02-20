@@ -147,7 +147,7 @@ public class RandomUtils {
         } while (r >= 1 || r == 0);
         return x * Math.sqrt(-2 * Math.log(r) / r);
 
-        // Remark:  y * Math.sqrt(-2 * Math.log(r) / r)
+        // Remark:  y * Math.sqrt(-2 * Math.log(random) / random)
         // is an independent random gaussian
     }
 
@@ -270,7 +270,7 @@ public class RandomUtils {
                                                + "equal 1.0: " + sum);
         }
 
-        // the for loop may not return a value when both r is (nearly) 1.0 and when the
+        // the for loop may not return a value when both random is (nearly) 1.0 and when the
         // cumulative sum is less than 1.0 (as a result of floating-point roundoff error)
         while (true) {
             double r = uniform(random);

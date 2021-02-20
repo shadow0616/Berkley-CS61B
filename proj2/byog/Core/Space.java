@@ -10,15 +10,19 @@ public class Space {
     public Position entrance;
     public Position startPos;
     public int entSide;
-    public Position[][] walls = new Position[4][]; // side: [0][] bottom, [1][] left, [2][] top, [3][] right
-    public Position[] exits = new Position[4]; // side: [0] bottom, [1] left, [2] top, [3] right
-    public Position[] corners = new Position[4]; // clockwise, start from [0] bottom left (startPos)
-    public Position[][] floors; // [i][j], i: row, j: column
-    public Random RANDOM;
+    // side: [0][] bottom, [1][] left, [2][] top, [3][] right
+    public Position[][] walls = new Position[4][];
+    // side: [0] bottom, [1] left, [2] top, [3] right
+    public Position[] exits = new Position[4];
+    // clockwise, start from [0] bottom left (startPos)
+    public Position[] corners = new Position[4];
+    // [i][j], i: row, j: column
+    public Position[][] floors;
+    public Random random;
 
     public void assignCorners() {
         corners[0] = startPos;
-        corners[1] = new Position(startPos.x, startPos.y + height - 1) ;
+        corners[1] = new Position(startPos.x, startPos.y + height - 1);
         corners[2] = new Position(startPos.x + width - 1, startPos.y + height - 1);
         corners[3] = new Position(startPos.x + width - 1, startPos.y);
     }
@@ -33,18 +37,22 @@ public class Space {
                             walls[side][i] = new Position(i + startPos.x + 1, startPos.y);
                             break;
                         case 2:
-                            walls[side][i] = new Position(i + startPos.x + 1, startPos.y + height - 1);
+                            walls[side][i] =
+                                    new Position(i + startPos.x + 1, startPos.y + height - 1);
                             break;
+                        default: throw new RuntimeException("unrecognized side number");
                     }
                 }
             } else {
                 walls[side] = new Position[height - 2];
                 for (int k = 0; k < height - 2; k += 1) {
                     switch (side) {
-                        case 1: walls[side][k] = new Position( startPos.x, k + startPos.y + 1);
+                        case 1: walls[side][k] = new Position(startPos.x, k + startPos.y + 1);
                             break;
-                        case 3: walls[side][k] = new Position(startPos.x + width - 1, k + startPos.y + 1);
+                        case 3: walls[side][k] =
+                                new Position(startPos.x + width - 1, k + startPos.y + 1);
                             break;
+                        default: throw new RuntimeException("unrecognized side number");
                     }
                 }
             }
@@ -69,41 +77,97 @@ public class Space {
         // draw walls
         for (Position[] side: walls) {
             for (Position pos: side) {
-                world[pos.x][pos.y] = TETile.colorVariant(wallTile, 32, 32, 32, RANDOM);
+                world[pos.x][pos.y] =
+                        TETile.colorVariant(wallTile, 32, 32, 32, random);
             }
         }
         // draw floors
         for (Position[] row: floors) {
             for (Position pos: row) {
-                world[pos.x][pos.y] = TETile.colorVariant(floorTile, 32, 32, 32, RANDOM);
+                world[pos.x][pos.y] =
+                        TETile.colorVariant(floorTile, 32, 32, 32, random);
             }
         }
         // draw corners
         for (Position corner: corners) {
-            world[corner.x][corner.y] = TETile.colorVariant(cornerTile, 32, 32, 32, RANDOM);
+            world[corner.x][corner.y] =
+                    TETile.colorVariant(cornerTile, 32, 32, 32, random);
         }
         // draw openings (for testing)
         for (Position exit: exits) {
             if (exit != null) {
-                world[exit.x][exit.y] = TETile.colorVariant(floorTile, 32, 32, 32, RANDOM);
+                world[exit.x][exit.y] =
+                        TETile.colorVariant(floorTile, 32, 32, 32, random);
             }
         }
         // draw start position & entrance
-        world[startPos.x][startPos.y] = TETile.colorVariant(startTile, 32, 32, 32, RANDOM);
-        world[entrance.x][entrance.y] = TETile.colorVariant(entTile, 32, 32, 32, RANDOM);
+//        world[startPos.x][startPos.y] =
+//                TETile.colorVariant(wallTile, 32, 32, 32, random);
+        world[entrance.x][entrance.y] =
+                TETile.colorVariant(floorTile, 32, 32, 32, random);
     }
 
     public void randomExits() {
         for (int i = 0; i < 4; i += 1) {
             if (i != entSide) {
-                switch(RANDOM.nextInt(2)) {
-                    case 0:
-                        break;
-                    case 1:
-                        exits[i] = walls[i][RANDOM.nextInt(walls[i].length)];
-                        break;
-                }
+                exits[i] = walls[i][random.nextInt(walls[i].length)];
             }
         }
+    }
+
+    public boolean overlapCheck(Space space) {
+        Position leftTop1 = this.corners[1];
+        Position rightBot1 = this.corners[3];
+        Position leftTop2 = space.corners[1];
+        Position rightBot2 = space.corners[3];
+        if (leftTop1.x > rightBot2.x || leftTop2.x > rightBot1.x) {
+            return false;
+        }
+        if (leftTop1.y < rightBot2.y || leftTop2.y < rightBot1.y) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean inBoundCheck(int width, int height) {
+        Position leftTop = this.corners[1];
+        Position rightBot = this.corners[2];
+        if (leftTop.x < 0 || rightBot.x > width - 1) {
+            return false;
+        }
+        if (leftTop.y > height - 1 || rightBot.y < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public int calcEntSide(int exitSide) {
+        switch (exitSide) {
+            case 0: return 2;
+            case 1: return 3;
+            case 2: return 0;
+            case 3: return 1;
+            default: throw new RuntimeException("unrecognized side number");
+        }
+    }
+
+    public Position calcNewEnt(Position exit, int exitSide) {
+        Position newEnt;
+        switch (exitSide) {
+            case 0:
+                newEnt = new Position(exit.x, exit.y - 1);
+                break;
+            case 1:
+                newEnt = new Position(exit.x - 1, exit.y);
+                break;
+            case 2:
+                newEnt = new Position(exit.x, exit.y + 1);
+                break;
+            case 3:
+                newEnt = new Position(exit.x + 1, exit.y);
+                break;
+            default: throw new RuntimeException("unrecognized side number");
+        }
+        return newEnt;
     }
 }

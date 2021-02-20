@@ -3,13 +3,13 @@ package byog.Core;
 import java.util.Random;
 
 public class Room extends Space {
-    public Room(Position entrance, int entSide, Random RANDOM) {
+    public Room(Position entrance, int entSide, Random r) {
         this.entrance = entrance;
         this.entSide = entSide;
-        this.RANDOM = RANDOM;
+        this.random = r;
         // room size constraint, max: 9 x 9, min: 2 x 2, hard coded for now
-        width = RANDOM.nextInt(8) + 2;
-        height = RANDOM.nextInt(8) + 2;
+        width = random.nextInt(5) + 4;
+        height = random.nextInt(5) + 4;
 //            width = 9;
 //            height = 9;
         // randomizes entrance position in the walls of the room
@@ -28,8 +28,8 @@ public class Room extends Space {
     public int randomEntrance() {
         int entWallPos;
         switch (entSide % 2) {
-            case 0: entWallPos = 1 + RANDOM.nextInt(width - 2); break; // avoid corners
-            case 1: entWallPos = 1 + RANDOM.nextInt(height - 2); break; // avoid corners
+            case 0: entWallPos = 1 + random.nextInt(width - 2); break; // avoid corners
+            case 1: entWallPos = 1 + random.nextInt(height - 2); break; // avoid corners
             default:
                 throw new IllegalStateException("Unexpected value: " + entSide % 2);
         }
@@ -37,10 +37,19 @@ public class Room extends Space {
     }
     public void calcStartPos(int entWallPos) {
         switch (entSide) {
-            case 0: startPos = new Position(entrance.x - entWallPos, entrance.y); break;
-            case 1: startPos = new Position(entrance.x, entrance.y  - entWallPos); break;
-            case 2: startPos = new Position(entrance.x - entWallPos, entrance.y  - height + 1); break;
-            case 3: startPos = new Position(entrance.x - width + 1, entrance.y  - entWallPos); break;
+            case 0:
+                startPos = new Position(entrance.x - entWallPos, entrance.y);
+                break;
+            case 1:
+                startPos = new Position(entrance.x, entrance.y  - entWallPos);
+                break;
+            case 2:
+                startPos = new Position(entrance.x - entWallPos, entrance.y  - height + 1);
+                break;
+            case 3:
+                startPos = new Position(entrance.x - width + 1, entrance.y  - entWallPos);
+                break;
+            default: throw new RuntimeException("unrecognized entrance side number");
         }
     }
 }
