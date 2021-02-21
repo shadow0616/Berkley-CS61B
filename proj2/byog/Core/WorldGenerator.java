@@ -20,21 +20,22 @@ public class WorldGenerator {
         this.height = world[0].length;
     }
 
-    public void branchOut(Space curr, int count) {
-        if (count > 0) {
-            for (int side = 0; side < 4; side += 1) {
-                Position exit = curr.exits[side];
-                int judgeNum = random.nextInt(2);
-                if (exit != null && judgeNum == 1) {
-                    for (int i = 0; i < 3; i += 1) {
-                        Space newSpace = randRoomOrHallway(curr, side);
-                        boolean inBound = newSpace.inBoundCheck(width, height);
-                        boolean overlap = this.overlapCheckSpaces(newSpace);
-                        if (inBound && !overlap) {
-                            spaces.add(newSpace);
-                            branchOut(newSpace, count - 1);
-                            break;
-                        }
+    public void branchOut(Space curr) {
+        curr.drawSpace(world);
+        spaces.get(0).drawLockedDoor(world);
+        for (int side = 0; side < 4; side += 1) {
+            Position exit = curr.exits[side];
+            int judgeNum = random.nextInt(2);
+            if (exit != null && judgeNum == 1) {
+                for (int i = 0; i < 3; i += 1) {
+                    Space newSpace = randRoomOrHallway(curr, side);
+                    boolean inBound = newSpace.inBoundCheck(width, height);
+                    boolean overlap = this.overlapCheckSpaces(newSpace);
+                    if (inBound && !overlap) {
+                        curr.fillExit(world, side);
+                        spaces.add(newSpace);
+                        branchOut(newSpace);
+                        break;
                     }
                 }
             }
@@ -73,7 +74,7 @@ public class WorldGenerator {
         Position initPos = new Position(50, 30);
         Room initRoom = new Room(initPos, 0, random);
         spaces.add(initRoom);
-        branchOut(initRoom, 6);
+        branchOut(initRoom);
     }
 
     public void drawWorld() {

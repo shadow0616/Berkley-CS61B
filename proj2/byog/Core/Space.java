@@ -91,20 +91,28 @@ public class Space {
         // draw corners
         for (Position corner: corners) {
             world[corner.x][corner.y] =
-                    TETile.colorVariant(cornerTile, 32, 32, 32, random);
+                    TETile.colorVariant(wallTile, 32, 32, 32, random);
         }
         // draw openings (for testing)
-        for (Position exit: exits) {
-            if (exit != null) {
-                world[exit.x][exit.y] =
-                        TETile.colorVariant(floorTile, 32, 32, 32, random);
-            }
-        }
+//        for (Position exit: exits) {
+//            if (exit != null) {
+//                world[exit.x][exit.y] =
+//                        TETile.colorVariant(floorTile, 32, 32, 32, random);
+//            }
+//        }
         // draw start position & entrance
 //        world[startPos.x][startPos.y] =
 //                TETile.colorVariant(wallTile, 32, 32, 32, random);
         world[entrance.x][entrance.y] =
                 TETile.colorVariant(floorTile, 32, 32, 32, random);
+    }
+
+    public void fillExit(TETile[][] world, int side) {
+        world[exits[side].x][exits[side].y] = TETile.colorVariant(Tileset.FLOOR, 32, 32, 32, random);
+    }
+
+    public void drawLockedDoor(TETile[][] world) {
+        world[entrance.x][entrance.y] = Tileset.LOCKED_DOOR;
     }
 
     public void randomExits() {
@@ -131,7 +139,7 @@ public class Space {
 
     public boolean inBoundCheck(int width, int height) {
         Position leftTop = this.corners[1];
-        Position rightBot = this.corners[2];
+        Position rightBot = this.corners[3];
         if (leftTop.x < 0 || rightBot.x > width - 1) {
             return false;
         }
