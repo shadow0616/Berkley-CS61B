@@ -5,7 +5,7 @@ import byog.TileEngine.TETile;
 import byog.lab5.RandomWorldDemo;
 import java.util.Random;
 
-public class testWorldGenerator {
+public class TestWorldGenerator {
     private static final int HEIGHT = 60;
     private static final int WIDTH = 100;
     private static final long SEED = 3; // 2873123
@@ -27,8 +27,10 @@ public class testWorldGenerator {
 
 //        for (Space space: testGen.spaces) {
 //            System.out.println(space.inBoundCheck(width, height));
-//            System.out.println("left top: " + "(" + space.corners[1].x + ", " + space.corners[1].y + ")");
-//            System.out.println("right bot: " + "(" + space.corners[3].x + ", " + space.corners[3].y + ")");
+//            System.out.println("left top: "
+//                + "(" + space.corners[1].x + ", " + space.corners[1].y + ")");
+//            System.out.println("right bot: "
+//                + "(" + space.corners[3].x + ", " + space.corners[3].y + ")");
 //            System.out.println("");
 //        }
 
