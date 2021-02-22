@@ -6,8 +6,8 @@ import byog.lab5.RandomWorldDemo;
 import java.util.Random;
 
 public class TestWorldGenerator {
-    private static final int HEIGHT = 60;
-    private static final int WIDTH = 100;
+    private static final int HEIGHT = 30;
+    private static final int WIDTH = 80;
 //    private static final long SEED = 3; // 2873123
 
 
@@ -18,7 +18,7 @@ public class TestWorldGenerator {
         test.initialize(WIDTH, HEIGHT);
         TETile[][] testWorld = new TETile[WIDTH][HEIGHT];
         RandomWorldDemo.fillWithNothing(testWorld);
-        Random RANDOM = new Random(WorldGenerator.parseInput("N8S"));
+        Random RANDOM = new Random(WorldGenerator.parseInput("N123123123164756S"));
         WorldGenerator testGen = new WorldGenerator(testWorld, RANDOM);
 
         int width = testWorld.length;
