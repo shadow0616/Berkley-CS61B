@@ -37,6 +37,7 @@ public class Game {
         Random random = new Random(seed);
         ter.initialize(WIDTH, HEIGHT);
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
+        RandomWorldDemo.fillWithNothing(finalWorldFrame);
         WorldGenerator generator = new WorldGenerator(finalWorldFrame, random);
         generator.generateWorld();
         return finalWorldFrame;

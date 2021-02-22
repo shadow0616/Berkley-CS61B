@@ -25,14 +25,14 @@ public class testWorldGenerator {
         System.out.println("width: " + width + ", height: " + height);
         testGen.generateWorld();
 
-        for (Space space: testGen.spaces) {
-            System.out.println(space.inBoundCheck(width, height));
-            System.out.println("left top: " + "(" + space.corners[1].x + ", " + space.corners[1].y + ")");
-            System.out.println("right bot: " + "(" + space.corners[3].x + ", " + space.corners[3].y + ")");
-            System.out.println("");
-        }
+//        for (Space space: testGen.spaces) {
+//            System.out.println(space.inBoundCheck(width, height));
+//            System.out.println("left top: " + "(" + space.corners[1].x + ", " + space.corners[1].y + ")");
+//            System.out.println("right bot: " + "(" + space.corners[3].x + ", " + space.corners[3].y + ")");
+//            System.out.println("");
+//        }
 
-        System.out.println(testGen.spaces.size());
+//        System.out.println(testGen.spaces.size());
 //        testGen.drawWorld();
 
 //        Position testPos = new Position(25, 25);

@@ -4,21 +4,24 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import java.util.Random;
 
-public class Space {
-    public int width;
-    public int height;
-    public Position entrance;
-    public Position startPos;
-    public int entSide;
+public abstract class Space {
+    protected int width;
+    protected int height;
+    protected Position entrance;
+    protected Position startPos;
+    protected int entSide;
     // side: [0][] bottom, [1][] left, [2][] top, [3][] right
-    public Position[][] walls = new Position[4][];
+    protected Position[][] walls = new Position[4][];
     // side: [0] bottom, [1] left, [2] top, [3] right
-    public Position[] exits = new Position[4];
+    protected Position[] exits = new Position[4];
     // clockwise, start from [0] bottom left (startPos)
-    public Position[] corners = new Position[4];
+    protected Position[] corners = new Position[4];
     // [i][j], i: row, j: column
-    public Position[][] floors;
-    public Random random;
+    protected Position[][] floors;
+    protected Random random;
+
+    public Space() {
+    }
 
     public void assignCorners() {
         corners[0] = startPos;
@@ -108,7 +111,8 @@ public class Space {
     }
 
     public void fillExit(TETile[][] world, int side) {
-        world[exits[side].x][exits[side].y] = TETile.colorVariant(Tileset.FLOOR, 32, 32, 32, random);
+        world[exits[side].x][exits[side].y] =
+                TETile.colorVariant(Tileset.FLOOR, 32, 32, 32, random);
     }
 
     public void drawLockedDoor(TETile[][] world) {
@@ -137,13 +141,13 @@ public class Space {
         return true;
     }
 
-    public boolean inBoundCheck(int width, int height) {
+    public boolean inBoundCheck(int W, int H) {
         Position leftTop = this.corners[1];
         Position rightBot = this.corners[3];
-        if (leftTop.x < 0 || rightBot.x > width - 1) {
+        if (leftTop.x < 0 || rightBot.x > W - 1) {
             return false;
         }
-        if (leftTop.y > height - 1 || rightBot.y < 0) {
+        if (leftTop.y > H - 1 || rightBot.y < 0) {
             return false;
         }
         return true;
