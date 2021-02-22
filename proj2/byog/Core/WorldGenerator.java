@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class WorldGenerator {
-    private List<Space> spaces = new ArrayList<>();
+    public List<Space> spaces = new ArrayList<>();
     private Random random;
     private TETile[][] world;
     private int width;
@@ -71,8 +71,8 @@ public class WorldGenerator {
     }
 
     public void generateWorld() {
-        int xRange = width / 2;
-        int yRange = height / 2;
+        int xRange = width / 4;
+        int yRange = height / 4;
         int sign;
         if (random.nextInt(2) == 1) {
             sign = 1;

@@ -8,16 +8,17 @@ import java.util.Random;
 public class TestWorldGenerator {
     private static final int HEIGHT = 60;
     private static final int WIDTH = 100;
-    private static final long SEED = 3; // 2873123
+//    private static final long SEED = 3; // 2873123
 
 
-    private static final Random RANDOM = new Random(SEED);
+
 
     public static void main(String[] args) {
         TERenderer test = new TERenderer();
         test.initialize(WIDTH, HEIGHT);
         TETile[][] testWorld = new TETile[WIDTH][HEIGHT];
         RandomWorldDemo.fillWithNothing(testWorld);
+        Random RANDOM = new Random(WorldGenerator.parseInput("N8S"));
         WorldGenerator testGen = new WorldGenerator(testWorld, RANDOM);
 
         int width = testWorld.length;
@@ -34,7 +35,8 @@ public class TestWorldGenerator {
 //            System.out.println("");
 //        }
 
-//        System.out.println(testGen.spaces.size());
+        System.out.println("(" + testGen.spaces.get(0).entrance.x + ", " +
+                testGen.spaces.get(0).entrance.y + ")");
 //        testGen.drawWorld();
 
 //        Position testPos = new Position(25, 25);
@@ -43,7 +45,7 @@ public class TestWorldGenerator {
 //        Hallway testHall = new Hallway(testPos2, 3, RANDOM);
 //        testRoom.drawSpace(testWorld);
 //        testHall.drawSpace(testWorld);
-        System.out.println(WorldGenerator.parseInput("N1124512234ssss"));
+
         test.renderFrame(testWorld);
     }
 }
