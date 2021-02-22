@@ -71,16 +71,33 @@ public class WorldGenerator {
     }
 
     public void generateWorld() {
-        Position initPos = new Position(50, 30);
-        Room initRoom = new Room(initPos, 0, random);
+        int xRange = width / 2;
+        int yRange = height / 2;
+        int sign;
+        if (random.nextInt(2) == 1) {
+            sign = 1;
+        } else {
+            sign = -1;
+        }
+        int initX = width / 2 + sign * random.nextInt(xRange);
+        int initY = height / 2 + sign * random.nextInt(yRange);
+        Position initPos = new Position(initX, initY);
+        Room initRoom = new Room(initPos, random.nextInt(4), random);
+        while (!initRoom.inBoundCheck(width, height)) {
+            initRoom = new Room(initPos, random.nextInt(4), random);
+        }
         spaces.add(initRoom);
         branchOut(initRoom);
     }
 
-    public void drawWorld() {
-        for (Space space: spaces) {
-            space.drawSpace(world);
+    public static long parseInput(String arg) {
+        StringBuilder numsString = new StringBuilder();
+        for (int i = 0; i < arg.length(); i += 1) {
+            if (Character.isDigit(arg.charAt(i))) {
+                numsString.append(arg.charAt(i));
+            }
         }
+        String result = numsString.toString();
+        return Long.parseLong(result);
     }
-
 }

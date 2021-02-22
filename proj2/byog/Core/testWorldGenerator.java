@@ -41,7 +41,7 @@ public class testWorldGenerator {
 //        Hallway testHall = new Hallway(testPos2, 3, RANDOM);
 //        testRoom.drawSpace(testWorld);
 //        testHall.drawSpace(testWorld);
-
+        System.out.println(WorldGenerator.parseInput("N1124512234ssss"));
         test.renderFrame(testWorld);
     }
 }
