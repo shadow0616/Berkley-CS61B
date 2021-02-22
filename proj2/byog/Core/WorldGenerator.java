@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class WorldGenerator {
-    public List<Space> spaces = new ArrayList<>();
+    private List<Space> spaces = new ArrayList<>();
     private Random random;
     private TETile[][] world;
     private int width;

@@ -35,8 +35,8 @@ public class TestWorldGenerator {
 //            System.out.println("");
 //        }
 
-        System.out.println("(" + testGen.spaces.get(0).entrance.x + ", " +
-                testGen.spaces.get(0).entrance.y + ")");
+//        System.out.println("(" + testGen.spaces.get(0).entrance.x + ", " +
+//                testGen.spaces.get(0).entrance.y + ")");
 //        testGen.drawWorld();
 
 //        Position testPos = new Position(25, 25);
