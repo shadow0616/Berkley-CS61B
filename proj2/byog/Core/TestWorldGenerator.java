@@ -18,8 +18,8 @@ public class TestWorldGenerator {
         test.initialize(WIDTH, HEIGHT);
         TETile[][] testWorld = new TETile[WIDTH][HEIGHT];
         RandomWorldDemo.fillWithNothing(testWorld);
-        Random RANDOM = new Random(WorldGenerator.parseInput("N123123123164756S"));
-        WorldGenerator testGen = new WorldGenerator(testWorld, RANDOM);
+        Random random = new Random(WorldGenerator.parseInput("N123123123164756S"));
+        WorldGenerator testGen = new WorldGenerator(testWorld, random);
 
         int width = testWorld.length;
         int height = testWorld[0].length;
